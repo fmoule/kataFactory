@@ -36,6 +36,14 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.10.1</version>
                 </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                    </configuration>
+                </plugin>
             </plugins>
         </pluginManagement>
 
@@ -58,6 +66,20 @@
                 <groupId>com.b4finance.factory</groupId>
                 <artifactId>factory-bean</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+
+            <!-- ///// Librairies générales : ///// -->
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>3.12.0</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.json</groupId>
+                <artifactId>json</artifactId>
+                <version>20211205</version>
             </dependency>
 
             <!-- ///// Librairies de test ///// -->

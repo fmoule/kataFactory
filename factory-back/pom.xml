@@ -25,8 +25,29 @@
     <dependencies>
 
         <dependency>
+            <groupId>com.b4finance.factory</groupId>
+            <artifactId>factory-bean</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <!-- ///// Librairies générales : ///// -->
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- ///// Librairies de tests ///// -->
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
