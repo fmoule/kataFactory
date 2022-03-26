@@ -18,6 +18,7 @@ public class SellingFoobarAction extends AbstractSimpleRobotAction {
             return;
         }
         sleep((longPart(totalNbFoobars / 5) + 1) * (10 * this.getUnitDurationMillis()));
+        LOGGER.info("---> Selling {} foobars", totalNbFoobars);
         robotManager.addAmount(totalNbFoobars);
         robotManager.getFooBarWarehouse().fetchBeans(totalNbFoobars);
     }

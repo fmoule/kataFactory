@@ -14,6 +14,7 @@ public class BarMiningAction extends AbstractSimpleRobotAction {
 
     @Override
     public void doExecute(final RobotManager robotManager) throws Exception {
+        LOGGER.info("---> mining bar");
         sleep(random(0.5, 2).longValue() * this.getUnitDurationMillis());
         robotManager.getBarWarehouse().put(new BarBean());
     }

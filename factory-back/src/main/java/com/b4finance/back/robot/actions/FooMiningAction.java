@@ -13,6 +13,7 @@ public class FooMiningAction extends AbstractSimpleRobotAction {
 
     @Override
     public void doExecute(final RobotManager robotManager) throws Exception {
+        LOGGER.info("---> mining foo");
         sleep(this.getUnitDurationMillis());
         robotManager.putFooBean(new FooBean());
     }

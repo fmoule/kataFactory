@@ -28,6 +28,7 @@ public class FoobarAssemblyAction extends AbstractSimpleRobotAction {
         if (fooBean == null || barBean == null) {
             return;
         }
+        LOGGER.info("---> Assemblying foobar");
         sleep(2 * this.getUnitDurationMillis());
         if (new BigDecimal(randomNumber.toString()).compareTo(SUCCESS_PERCENTAGE) > 0) {
             robotManager.putBarBean(barBean);

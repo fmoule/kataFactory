@@ -17,6 +17,7 @@ public class BuyingRobotAction extends AbstractSimpleRobotAction {
         if (robotManager.getTotalAmount() < 3 || robotManager.getNbFoos() < 6) {
             return;
         }
+        LOGGER.info("---> buying 1 robot");
         robotManager.getWallet().spendAmount(3);
         robotManager.getFooWarehouse().fetchBeans(6);
         robotManager.createNewRobot(this.defaultActions);
