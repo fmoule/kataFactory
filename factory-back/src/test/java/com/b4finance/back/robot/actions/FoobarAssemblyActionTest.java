@@ -30,19 +30,19 @@ class FoobarAssemblyActionTest {
 
     @Test
     public void shouldExecuteWithSuccess() throws Exception {
-        this.initWarehouses(5, 3);
+        this.initWarehouses(7, 3);
         foobarAssemblyAction.doExecute(robotManager, 0.5);
         assertThat(robotManager.getNbFoobars()).isEqualTo(1);
-        assertThat(robotManager.getNbFoos()).isEqualTo(4);
+        assertThat(robotManager.getNbFoos()).isEqualTo(6);
         assertThat(robotManager.getNbBars()).isEqualTo(2);
     }
 
     @Test
     public void shouldExecuteWithFail() throws Exception {
-        this.initWarehouses(5, 3);
+        this.initWarehouses(7, 3);
         foobarAssemblyAction.doExecute(robotManager, 0.654);
         assertThat(robotManager.getNbFoobars()).isEqualTo(0);
-        assertThat(robotManager.getNbFoos()).isEqualTo(4);
+        assertThat(robotManager.getNbFoos()).isEqualTo(6);
         assertThat(robotManager.getNbBars()).isEqualTo(3);
     }
 
