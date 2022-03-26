@@ -2,6 +2,7 @@ package com.b4finance.back.endPoints;
 
 import com.b4finance.back.robot.Robot;
 import com.b4finance.back.robot.RobotManager;
+import com.b4finance.back.robot.actions.RobotAction;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -24,6 +25,8 @@ import static org.springframework.http.ResponseEntity.status;
 public class RobotManagerController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RobotManagerController.class);
     private RobotManager robotManager;
+    private List<RobotAction> defaultRobotActions;
+
 
     ///// Endpoints :
 
@@ -33,6 +36,12 @@ public class RobotManagerController {
         if (this.robotManager == null) {
             return status(BAD_REQUEST).body("Erreur: Pas de robotManager !!");
         }
+        if (this.robotManager.getRobots().size() == 0) {
+            LOGGER.info("---> Creating 2 robots");
+            this.robotManager.createNewRobot(this.defaultRobotActions);
+            this.robotManager.createNewRobot(this.defaultRobotActions);
+        }
+        LOGGER.info("===> Starting the robot manager");
         this.robotManager.start();
         return ok("robotManager démarré");
     }
@@ -85,5 +94,10 @@ public class RobotManagerController {
     @Autowired
     public void setRobotManager(@Qualifier("robotManager") final RobotManager robotManager) {
         this.robotManager = robotManager;
+    }
+
+    @Autowired
+    public void setdefaultActionList(@Qualifier("defaultActionList") final List<RobotAction> defaultRobotActions) {
+        this.defaultRobotActions = defaultRobotActions;
     }
 }

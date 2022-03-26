@@ -23,6 +23,10 @@ public class FoobarAssemblyAction extends AbstractSimpleRobotAction {
     }
 
     void doExecute(final RobotManager robotManager, final Number randomNumber) throws Exception {
+        if (robotManager.getNbFoos() < 6) {
+            LOGGER.info("---> we keep 6 foos to buy robots so we don't assembly a new foobar !!");
+            return;
+        }
         final FooBean fooBean = robotManager.fetchFooBean();
         final BarBean barBean = robotManager.fetchBarBean();
         if (fooBean == null || barBean == null) {

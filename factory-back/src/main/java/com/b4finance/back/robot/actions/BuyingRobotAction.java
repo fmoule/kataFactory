@@ -14,7 +14,10 @@ public class BuyingRobotAction extends AbstractSimpleRobotAction {
 
     @Override
     public void doExecute(final RobotManager robotManager) {
-        if (robotManager.getTotalAmount() < 3 || robotManager.getNbFoos() < 6) {
+        long totalAmount = robotManager.getTotalAmount();
+        int nbFoos = robotManager.getNbFoos();
+        if (totalAmount < 3 || nbFoos < 6) {
+            LOGGER.info("---> No buying robots because {} < 3 euros and {} < 6 foos", totalAmount, nbFoos);
             return;
         }
         LOGGER.info("---> buying 1 robot");

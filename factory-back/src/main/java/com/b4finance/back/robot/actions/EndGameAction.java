@@ -12,7 +12,9 @@ public class EndGameAction extends AbstractSimpleRobotAction {
 
     @Override
     protected void doExecute(final RobotManager robotManager) {
-        if (robotManager == null || robotManager.getRobots().size() < this.maxRobots) {
+        int nbRobots = (robotManager == null ? 0 : robotManager.getRobots().size());
+        if (robotManager == null || nbRobots < this.maxRobots) {
+            LOGGER.info("---> We continue because nbRobots = {} < {}", nbRobots, this.maxRobots);
             return;
         }
         LOGGER.info("=====================");

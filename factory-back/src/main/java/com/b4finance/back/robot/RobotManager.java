@@ -95,6 +95,16 @@ public class RobotManager implements Startable {
             robot.stop();
         }
         this.executorService.shutdownNow();
+        this.clear();
+    }
+
+    public void clear() {
+        this.robotlock.writeLock().lock();
+        try {
+            this.robots.clear();
+        } finally {
+            this.robotlock.writeLock().unlock();
+        }
     }
 
     @Override
