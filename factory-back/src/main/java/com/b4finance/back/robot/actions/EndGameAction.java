@@ -12,12 +12,12 @@ public class EndGameAction extends AbstractSimpleRobotAction {
 
     @Override
     protected void doExecute(final RobotManager robotManager) {
-        if (robotManager != null
-                && robotManager.getRobots().size() >= this.maxRobots) {
-            LOGGER.info("=====================");
-            LOGGER.info("===> Le jeu est fini");
-            LOGGER.info("=====================");
-            robotManager.stop();
+        if (robotManager == null || robotManager.getRobots().size() < this.maxRobots) {
+            return;
         }
+        LOGGER.info("=====================");
+        LOGGER.info("===> Le jeu est fini");
+        LOGGER.info("=====================");
+        robotManager.stop();
     }
 }

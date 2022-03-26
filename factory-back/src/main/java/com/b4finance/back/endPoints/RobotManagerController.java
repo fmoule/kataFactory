@@ -37,6 +37,16 @@ public class RobotManagerController {
         return ok("robotManager démarré");
     }
 
+    @CrossOrigin(origins = "*")
+    @PutMapping(path = "/stop")
+    public ResponseEntity<String> stop() {
+        if (this.robotManager == null || !this.robotManager.isStarted()) {
+            return ok("robotManager arrêté !!");
+        }
+        this.robotManager.stop();
+        return ok("robotManager arrêté");
+    }
+
     @GetMapping(path = "/get/state")
     @CrossOrigin(origins = "*")
     public ResponseEntity<String> fetchState() {
