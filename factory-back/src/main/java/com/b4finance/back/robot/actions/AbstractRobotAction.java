@@ -9,16 +9,16 @@ import java.time.temporal.TemporalUnit;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 
-public abstract class AbstractSimpleRobotAction implements RobotAction {
-    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractSimpleRobotAction.class);
+public abstract class AbstractRobotAction implements RobotAction {
+    protected static final Logger LOGGER = LoggerFactory.getLogger(AbstractRobotAction.class);
     private final String name;
     protected Duration unitDuration;
 
-    public AbstractSimpleRobotAction(final String name) {
+    public AbstractRobotAction(final String name) {
         this(name, 1, SECONDS);
     }
 
-    public AbstractSimpleRobotAction(final String name, final long amount, final TemporalUnit unit) {
+    public AbstractRobotAction(final String name, final long amount, final TemporalUnit unit) {
         this.unitDuration = Duration.of(amount, unit);
         this.name = name;
     }

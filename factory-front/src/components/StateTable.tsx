@@ -1,12 +1,13 @@
-import React, {useState} from "react";
-//  {"nbFoobars":2,"amount":0,"nbRobots":2,"nbFoos":5,"state":[{"nbRobots":2,"name":"sellingFoobar"}],"nbBars":5}
+import React, {useEffect, useRef, useState} from "react";
+import {callGET} from "../service/RobotManagerService";
+import {AxiosResponse} from "axios";
 
 export interface ActionState {
     name: string,
     nbRobots: number
 }
 
-export function convertIntoActionMap(actions: Array<ActionState>) : Map<string, number> {
+export function convertIntoActionMap(actions: Array<ActionState>): Map<string, number> {
     let resultMap = new Map<string, number>();
     for (let action of actions) {
         resultMap.set(action.name, action.nbRobots);
@@ -15,7 +16,18 @@ export function convertIntoActionMap(actions: Array<ActionState>) : Map<string, 
 }
 
 export interface StateTableProps {
-    isStarted: boolean
+    isStarted: boolean,
+    endGame: (isGameEnded: boolean) => void
+}
+
+export interface RobotManagerState {
+    isGameFinished: boolean,
+    nbRobots: number,
+    amount: number,
+    nbFoos: number,
+    nbBars: number,
+    nbFoobars: number,
+    state: Array<ActionState>
 }
 
 export const StateTable = (props: StateTableProps) => {
@@ -24,6 +36,40 @@ export const StateTable = (props: StateTableProps) => {
     const [nbFoobars, setNbFoobars] = useState(0);
     const [nbFoos, setNbFoos] = useState(0);
     const [nbBars, setNbBars] = useState(0);
+    const [actionStates, setActionStates] = useState(new Map<string, number>());
+
+    const intervalRef = useRef<NodeJS.Timer>();
+
+    const loadDatas = async () => {
+        if (!props.isStarted) {
+            return;
+        }
+        callGET<RobotManagerState>("http://localhost:8080/robotManager/get/state")
+            .then((resp: AxiosResponse<RobotManagerState>) => {
+                setNbrRobots(resp.data.nbRobots);
+                setNbBars(resp.data.nbBars);
+                setNbFoos(resp.data.nbFoos);
+                setNbFoobars(resp.data.nbFoobars);
+                setAmount(resp.data.amount);
+                setActionStates(convertIntoActionMap(resp.data.state));
+                if (resp.data.isGameFinished) {
+                    if (intervalRef.current !== undefined) {
+                        clearInterval(intervalRef.current);
+                    }
+                    props.endGame(true);
+                } else {
+                    props.endGame(false);
+                }
+            });
+    }
+
+    useEffect(() => {
+        let intervalID: NodeJS.Timer = setInterval(() => {
+            loadDatas();
+        }, 500);
+        intervalRef.current = intervalID;
+        return () => {clearInterval(intervalID)}
+    });
 
     return (<div className={"row"}>
         <div className={"row"}>
@@ -54,24 +100,28 @@ export const StateTable = (props: StateTableProps) => {
                     </thead>
                     <tbody>
                     <tr>
-                        <td>miningBar</td>
-                        <td>0</td>
+                        <td>Mining Bar</td>
+                        <td>{(!actionStates.has('miningBar') ? 0 : actionStates.get('miningBar'))}</td>
                     </tr>
                     <tr>
-                        <td>miningFoos</td>
-                        <td>0</td>
+                        <td>Mining Foos</td>
+                        <td>{(!actionStates.has('miningFoo') ? 0 : actionStates.get('miningFoo'))}</td>
                     </tr>
                     <tr>
-                        <td>assemblyFooBar</td>
-                        <td>0</td>
+                        <td>Assembly FooBar</td>
+                        <td>{(!actionStates.has('assemblyFooBar') ? 0 : actionStates.get('assemblyFooBar'))}</td>
                     </tr>
                     <tr>
-                        <td>sellingFoobar</td>
-                        <td>0</td>
+                        <td>Sell Foobars</td>
+                        <td>{(!actionStates.has('sellingFoobar') ? 0 : actionStates.get('sellingFoobar'))}</td>
                     </tr>
                     <tr>
-                        <td>buyingRobot</td>
-                        <td>0</td>
+                        <td>Buy robots</td>
+                        <td>{(!actionStates.has('buyingRobot') ? 0 : actionStates.get('buyingRobot'))}</td>
+                    </tr>
+                    <tr>
+                        <td>Check if game ended</td>
+                        <td>{(!actionStates.has('endGameAction') ? 0 : actionStates.get('endGameAction'))}</td>
                     </tr>
                     </tbody>
                 </table>

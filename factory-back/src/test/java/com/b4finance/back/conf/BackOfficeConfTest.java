@@ -34,6 +34,7 @@ class BackOfficeConfTest {
         assertThat(backOfficeConf).isNotNull();
         assertThat(backOfficeConf.getNbThreads()).isEqualTo(35);
         assertThat(backOfficeConf.getMaxRobots()).isEqualTo(10);
+        assertThat(backOfficeConf.getUnitMillis()).isEqualTo(500);
     }
 
     @Test

@@ -1,6 +1,7 @@
 package com.b4finance.back.robot;
 
-import com.b4finance.back.robot.actions.*;
+import com.b4finance.back.robot.actions.AbstractRobotAction;
+import com.b4finance.back.robot.actions.RobotAction;
 import com.b4finance.factory.bean.*;
 
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class RobotManager implements Startable {
@@ -24,6 +26,7 @@ public class RobotManager implements Startable {
     private final transient ReentrantReadWriteLock stateLock;
     private transient boolean isStarted;
     private int nbThreads;
+    private long unitMillis;
 
     ///// Constructeurs :
 
@@ -38,6 +41,7 @@ public class RobotManager implements Startable {
         this.robotlock = new ReentrantReadWriteLock();
         this.stateLock = new ReentrantReadWriteLock();
         this.isStarted = false;
+        this.defaultRobotActions = new ArrayList<>();
     }
 
     public RobotManager() {
@@ -75,6 +79,7 @@ public class RobotManager implements Startable {
         this.robotlock.writeLock().lock();
         try {
             createdRobot = new Robot("robot" + this.robots.size(), this);
+            createdRobot.setUnitDuration(this.unitMillis, MILLIS);
             createdRobot.setActions(actions);
             this.robots.add(createdRobot);
         } finally {
@@ -100,8 +105,8 @@ public class RobotManager implements Startable {
             robot.stop();
         }
         this.executorService.shutdownNow();
-        this.executorService =  new ThreadPoolExecutor(5, nbThreads, 300, MILLISECONDS, new LinkedBlockingQueue<>());
         this.clear();
+        this.executorService =  new ThreadPoolExecutor(5, nbThreads, 300, MILLISECONDS, new LinkedBlockingQueue<>());
     }
 
     public void clear() {
@@ -111,6 +116,10 @@ public class RobotManager implements Startable {
         } finally {
             this.robotlock.writeLock().unlock();
         }
+        this.fooBarWarehouse.clear();
+        this.fooWarehouse.clear();
+        this.barWarehouse.clear();
+        this.wallet.clear();
     }
 
     @Override
@@ -179,12 +188,13 @@ public class RobotManager implements Startable {
         return this.executorService;
     }
 
-    public void setExecutorService(final ExecutorService executorService) {
-        this.executorService = executorService;
-    }
-
     public void setDefaultRobotActions(final List<RobotAction> defaultRobotActions) {
         this.defaultRobotActions = defaultRobotActions;
+        for (RobotAction defaultRobotAction : defaultRobotActions) {
+            if (defaultRobotAction instanceof AbstractRobotAction) {
+                ((AbstractRobotAction) defaultRobotAction).setUnitDuration(this.unitMillis, MILLIS);
+            }
+        }
     }
 
     public List<RobotAction> getDefaultRobotActions() {
@@ -194,5 +204,14 @@ public class RobotManager implements Startable {
     public void setNbThreads(int nbThreads) {
         this.nbThreads = nbThreads;
         this.executorService =  new ThreadPoolExecutor(5, this.nbThreads, 300, MILLISECONDS, new LinkedBlockingQueue<>());
+    }
+
+    public void setUnitMillis(final Long unitMillis) {
+        this.unitMillis = (unitMillis == null ? 1000L : unitMillis);
+        for (RobotAction defaultRobotAction : defaultRobotActions) {
+            if (defaultRobotAction instanceof AbstractRobotAction) {
+                ((AbstractRobotAction) defaultRobotAction).setUnitDuration(this.unitMillis, MILLIS);
+            }
+        }
     }
 }

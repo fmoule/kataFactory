@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import static com.b4finance.factory.utils.RandomUtils.random;
 import static java.lang.Thread.sleep;
 
-public class FoobarAssemblyAction extends AbstractSimpleRobotAction {
+public class FoobarAssemblyAction extends AbstractRobotAction {
     private static final BigDecimal SUCCESS_PERCENTAGE = new BigDecimal("0.6");
 
     public FoobarAssemblyAction() {
@@ -23,7 +23,7 @@ public class FoobarAssemblyAction extends AbstractSimpleRobotAction {
     }
 
     void doExecute(final RobotManager robotManager, final Number randomNumber) throws Exception {
-        if (robotManager.getNbFoos() < 6) {
+        if (robotManager.getNbFoos() < 7) {
             LOGGER.info("---> we keep 6 foos to buy robots so we don't assembly a new foobar !!");
             return;
         }

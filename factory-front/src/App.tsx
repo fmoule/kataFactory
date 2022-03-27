@@ -5,13 +5,14 @@ import {StateTable} from "./components/StateTable";
 
 function App() {
     const [isStarted, setStarted] = useState(false);
+    const [isGameEnded, endGame] = useState(false);
 
     return (
         <div className="container">
             <div className={"row"}>&nbsp;</div>
-            <Header setStarted={setStarted}/>
+            <Header setStarted={setStarted} isGameEnded={isGameEnded}/>
             <div className={"row"}>&nbsp;</div>
-            <StateTable isStarted={isStarted}/>
+            <StateTable isStarted={isStarted} endGame={endGame}/>
         </div>
     );
 }

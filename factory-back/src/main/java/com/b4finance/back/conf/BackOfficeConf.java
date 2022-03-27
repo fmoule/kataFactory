@@ -14,15 +14,12 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 @Configuration
 public class BackOfficeConf {
     private int nbThreads;
     private int maxRobots;
+    private long unitMillis;
 
     @Bean(name = "fooWarehouse")
     public Warehouse<FooBean> buildFooBeanWarehouse() {
@@ -45,6 +42,7 @@ public class BackOfficeConf {
                                           @Qualifier("foobarWarehouse") final Warehouse<FooBarBean> foobarWarehouse) {
         final RobotManager robotManager = new RobotManager(fooWarehouse, barWarehouse, foobarWarehouse);
         robotManager.setNbThreads(nbThreads);
+        robotManager.setUnitMillis(this.unitMillis);
         robotManager.setDefaultRobotActions(buildDefaultRobotActions());
         return robotManager;
     }
@@ -77,7 +75,17 @@ public class BackOfficeConf {
         this.maxRobots = maxRobots;
     }
 
-    public int getMaxRobots() {
+    @Bean(name = "maxRobots")
+    public Integer getMaxRobots() {
         return maxRobots;
+    }
+
+    public long getUnitMillis() {
+        return unitMillis;
+    }
+
+    @Autowired
+    public void setUnitMillis(@Value("${back.unit.millis}") final Long unitMillis) {
+        this.unitMillis = (unitMillis == null ? 1000 : unitMillis);
     }
 }

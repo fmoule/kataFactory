@@ -4,7 +4,7 @@ import com.b4finance.back.robot.RobotManager;
 
 import java.util.List;
 
-public class BuyingRobotAction extends AbstractSimpleRobotAction {
+public class BuyingRobotAction extends AbstractRobotAction {
     private final List<RobotAction> defaultActions;
 
     public BuyingRobotAction(final List<RobotAction> defaultActions) {

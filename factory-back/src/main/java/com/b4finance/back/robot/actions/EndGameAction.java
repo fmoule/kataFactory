@@ -2,7 +2,7 @@ package com.b4finance.back.robot.actions;
 
 import com.b4finance.back.robot.RobotManager;
 
-public class EndGameAction extends AbstractSimpleRobotAction {
+public class EndGameAction extends AbstractRobotAction {
     private final int maxRobots;
 
     public EndGameAction(final int maxRobots) {

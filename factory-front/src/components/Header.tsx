@@ -1,14 +1,21 @@
 import React, {useEffect, useState} from "react";
-import {callGET, callPUT} from "../service/RobotManagerService";
-import {AxiosResponse} from "axios";
+import {callPUT} from "../service/RobotManagerService";
 
 export interface HeaderProps {
-    setStarted: (val: boolean) => void;
-
+    setStarted: (val: boolean) => void,
+    isGameEnded: boolean
 }
 
 export const Header = (props: HeaderProps) => {
     const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        if (props.isGameEnded) {
+            showMessage("Jeu fini !!");
+        }
+    });
+
+    //// Méthodes :
 
     const showMessage = (msg: string) => {
         setMessage(msg);
@@ -17,9 +24,8 @@ export const Header = (props: HeaderProps) => {
         }, 1500);
     };
 
-    const onClickStartButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-        let promise: Promise<AxiosResponse<string>> = callPUT<string>("http://localhost:8080/robotManager/start");
-        promise
+    const startBack = () => {
+        callPUT<string>("http://localhost:8080/robotManager/start")
             .then((axioResp) => {
                 props.setStarted(true);
                 showMessage("RobotManager started !!")
@@ -30,9 +36,8 @@ export const Header = (props: HeaderProps) => {
             });
     };
 
-    const onClickStopButton = (event: React.MouseEvent<HTMLButtonElement>) => {
-        let promise: Promise<AxiosResponse<string>> = callPUT<string>("http://localhost:8080/robotManager/stop");
-        promise
+    const stopBack = () => {
+        callPUT<string>("http://localhost:8080/robotManager/stop")
             .then((axioResp) => {
                 props.setStarted(false);
                 showMessage("RobotManager stopped !!")
@@ -45,10 +50,10 @@ export const Header = (props: HeaderProps) => {
 
     return (<div className={"row"}>
         <div className={"col-2"}>
-            <button type="button" className="btn btn-primary" onClick={onClickStartButton}>Start</button>
+            <button type="button" className="btn btn-primary" onClick={(event) => {startBack();}}>Start</button>
         </div>
         <div className={"col-2"}>
-            <button type="button" className="btn btn-danger" onClick={onClickStopButton}>Stop</button>
+            <button type="button" className="btn btn-danger" onClick={(event) => {stopBack();}}>Stop</button>
         </div>
         <div className={"col-8"}>{message}</div>
     </div>);

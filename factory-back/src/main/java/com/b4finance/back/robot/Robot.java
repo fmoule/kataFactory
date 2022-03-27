@@ -5,6 +5,7 @@ import com.b4finance.back.robot.actions.RobotAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.time.temporal.TemporalUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
@@ -16,7 +17,6 @@ public class Robot implements Startable {
     private final CyclicAction cyclicAction;
     private final String name;
     private boolean isStarted;
-
 
     public Robot(final String robotName, final RobotManager robotManager) {
         this.name = robotName;
@@ -93,6 +93,10 @@ public class Robot implements Startable {
 
     public String getName() {
         return name;
+    }
+
+    public void setUnitDuration(final long amount, final TemporalUnit unit) {
+        this.cyclicAction.setUnitDuration(amount, unit);
     }
 
     ///// Classe(s) interne(s):
