@@ -6,7 +6,7 @@ import com.b4finance.factory.bean.BarBean;
 import static com.b4finance.factory.utils.RandomUtils.random;
 import static java.lang.Thread.sleep;
 
-public class BarMiningAction extends AbstractSimpleRobotAction {
+public class BarMiningAction extends AbstractRobotAction {
 
     public BarMiningAction() {
         super("miningBar");

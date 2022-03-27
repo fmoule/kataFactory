@@ -5,7 +5,7 @@ import com.b4finance.factory.bean.FooBean;
 
 import static java.lang.Thread.sleep;
 
-public class FooMiningAction extends AbstractSimpleRobotAction {
+public class FooMiningAction extends AbstractRobotAction {
 
     public FooMiningAction() {
         super("miningFoo");

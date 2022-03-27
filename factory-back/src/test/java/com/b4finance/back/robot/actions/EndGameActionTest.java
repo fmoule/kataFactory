@@ -5,10 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class EndGameActionTest {
@@ -24,7 +21,7 @@ class EndGameActionTest {
     @BeforeEach
     void setUp() {
         this.robotManager = new RobotManager();
-        this.robotManager.setExecutorService(new ThreadPoolExecutor(2, 5, 250, MILLISECONDS, new LinkedBlockingQueue<>()));
+        this.robotManager.setNbThreads(7);
         this.action = new EndGameAction(5);
     }
 

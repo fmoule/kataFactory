@@ -5,10 +5,10 @@ import com.b4finance.back.robot.RobotManager;
 import static com.b4finance.factory.utils.NumberUtils.longPart;
 import static java.lang.Thread.sleep;
 
-public class SellingFoobarAction extends AbstractSimpleRobotAction {
+public class SellingFoobarAction extends AbstractRobotAction {
 
     public SellingFoobarAction() {
-        super("SellingFoobar");
+        super("sellingFoobar");
     }
 
     @Override

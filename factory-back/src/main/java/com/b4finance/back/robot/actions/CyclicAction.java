@@ -6,21 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-public class CyclicAction implements RobotAction {
+import static java.lang.Thread.sleep;
+
+public class CyclicAction extends AbstractRobotAction {
     private final List<RobotAction> actions;
     private int cursor;
     private final transient ReentrantReadWriteLock stateLock;
 
     public CyclicAction() {
+        super("cyclicAction");
         this.actions = new ArrayList<>();
         this.stateLock = new ReentrantReadWriteLock();
     }
-
-    public CyclicAction(final List<RobotAction> robotActions) {
-        this.actions = robotActions;
-        this.stateLock = new ReentrantReadWriteLock();
-    }
-
 
     public void addAction(final RobotAction robotAction) {
         this.actions.add(robotAction);
@@ -31,11 +28,12 @@ public class CyclicAction implements RobotAction {
     }
 
     @Override
-    public void execute(final RobotManager robotManager) throws Exception {
+    protected void doExecute(final RobotManager robotManager) throws Exception {
         if (actions.isEmpty()) {
             return;
         }
         getCurrentAction().execute(robotManager);
+        sleep(5 * this.getUnitDurationMillis());
         incrementCursor();
     }
 

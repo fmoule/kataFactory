@@ -47,4 +47,13 @@ public class Wallet {
             stateLock.writeLock().unlock();
         }
     }
+
+    public void clear() {
+        stateLock.writeLock().lock();
+        try {
+            this.totalAmount = 0;
+        } finally {
+            stateLock.writeLock().unlock();
+        }
+    }
 }

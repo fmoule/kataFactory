@@ -1,7 +1,7 @@
 package com.b4finance.back.endPoints;
 
 import com.b4finance.back.robot.RobotManager;
-import com.b4finance.back.robot.actions.AbstractSimpleRobotAction;
+import com.b4finance.back.robot.actions.AbstractRobotAction;
 import com.b4finance.factory.bean.BarBean;
 import com.b4finance.factory.bean.FooBarBean;
 import com.b4finance.factory.bean.FooBean;
@@ -12,12 +12,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.ResponseEntity;
 
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-
 import static java.lang.Thread.sleep;
 import static java.util.Collections.singletonList;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.OK;
@@ -47,9 +43,10 @@ class RobotManagerControllerTest {
     @BeforeEach
     void setUp() {
         this.robotManager = new RobotManager();
-        this.robotManager.setExecutorService(new ThreadPoolExecutor(2, 5, 250, MILLISECONDS, new LinkedBlockingQueue<>()));
+        this.robotManager.setNbThreads(7);
         this.robotManagerController = new RobotManagerController();
         this.robotManagerController.setRobotManager(robotManager);
+        this.robotManagerController.setMaxRobots(10);
     }
 
     @AfterEach
@@ -130,7 +127,7 @@ class RobotManagerControllerTest {
 
     ///// Classe(s) interne(s) :
 
-    private static class TestRobotAction extends AbstractSimpleRobotAction {
+    private static class TestRobotAction extends AbstractRobotAction {
 
         private TestRobotAction(final String name) {
             super(name);

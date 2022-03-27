@@ -9,13 +9,11 @@ import org.slf4j.LoggerFactory;
 
 import java.time.Duration;
 import java.time.temporal.TemporalUnit;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
 
 import static java.lang.Thread.sleep;
+import static java.time.temporal.ChronoUnit.MILLIS;
 import static java.time.temporal.ChronoUnit.SECONDS;
 import static java.util.Arrays.asList;
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class RobotTest {
@@ -27,9 +25,8 @@ class RobotTest {
     @BeforeEach
     void setUp() {
         this.robotManager = new RobotManager();
-        this.robotManager.setExecutorService(new ThreadPoolExecutor(5, 10, 300, MILLISECONDS, new LinkedBlockingQueue<>()));
+        this.robotManager.setNbThreads(10);
     }
-
 
     ///// Tests unitaires :
 
@@ -46,6 +43,7 @@ class RobotTest {
     @Test
     public void shouldExecute() throws Exception {
         final Robot robot = new Robot("robot", robotManager);
+        robot.setUnitDuration(20, MILLIS);
         robot.setActions(asList(new TestAction("action1", 3, SECONDS), new TestAction("action2", 5, SECONDS)));
         robot.start();
         assertThat(robot.getCurrentActionName()).isEqualTo("action1");

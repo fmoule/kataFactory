@@ -26,6 +26,7 @@ public class RobotManagerController {
     private static final Logger LOGGER = LoggerFactory.getLogger(RobotManagerController.class);
     private RobotManager robotManager;
     private List<RobotAction> defaultRobotActions;
+    private Integer maxRobots;
 
 
     ///// Endpoints :
@@ -67,6 +68,7 @@ public class RobotManagerController {
         final List<Robot> robots = this.robotManager.getRobots();
         final JSONObject jsonResponse = new JSONObject();
         jsonResponse.put("nbRobots", robots.size());
+        jsonResponse.put("isGameFinished", (robots.size() >= this.maxRobots));
         jsonResponse.put("amount", robotManager.getTotalAmount());
         jsonResponse.put("nbFoos", robotManager.getNbFoos());
         jsonResponse.put("nbBars", robotManager.getNbBars());
@@ -81,7 +83,8 @@ public class RobotManagerController {
         JSONObject jsonStateLine;
         for (String actName : actionNameMap.keySet()) {
             jsonStateLine = new JSONObject();
-            jsonStateLine.put(actName, actionNameMap.getOrDefault(actName, 0));
+            jsonStateLine.put("name", actName);
+            jsonStateLine.put("nbRobots", actionNameMap.getOrDefault(actName, 0));
             jsonState.put(jsonStateLine);
         }
         jsonResponse.put("state", jsonState);
@@ -99,5 +102,10 @@ public class RobotManagerController {
     @Autowired
     public void setdefaultActionList(@Qualifier("defaultActionList") final List<RobotAction> defaultRobotActions) {
         this.defaultRobotActions = defaultRobotActions;
+    }
+
+    @Autowired
+    public void setMaxRobots(@Qualifier("maxRobots") final Integer maxRobots) {
+        this.maxRobots = maxRobots;
     }
 }
