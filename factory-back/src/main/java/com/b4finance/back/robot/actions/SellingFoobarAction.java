@@ -8,7 +8,7 @@ import static java.lang.Thread.sleep;
 public class SellingFoobarAction extends AbstractSimpleRobotAction {
 
     public SellingFoobarAction() {
-        super("SellingFoobar");
+        super("sellingFoobar");
     }
 
     @Override

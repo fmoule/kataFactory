@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,13 +44,13 @@ public class BackOfficeConf {
                                           @Qualifier("barWarehouse") final Warehouse<BarBean> barWarehouse,
                                           @Qualifier("foobarWarehouse") final Warehouse<FooBarBean> foobarWarehouse) {
         final RobotManager robotManager = new RobotManager(fooWarehouse, barWarehouse, foobarWarehouse);
-        robotManager.setExecutorService(new ThreadPoolExecutor(5, nbThreads, 300, MILLISECONDS, new LinkedBlockingQueue<>()));
-        robotManager.setDefaultRobotActions(buildDefaultRRobotActions());
+        robotManager.setNbThreads(nbThreads);
+        robotManager.setDefaultRobotActions(buildDefaultRobotActions());
         return robotManager;
     }
 
     @Bean(name = "defaultActionList")
-    public List<RobotAction> buildDefaultRRobotActions() {
+    public List<RobotAction> buildDefaultRobotActions() {
         final List<RobotAction> robotActions = new ArrayList<>();
         robotActions.add(new FooMiningAction());
         robotActions.add(new BarMiningAction());

@@ -6,7 +6,11 @@ import com.b4finance.factory.bean.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 
 public class RobotManager implements Startable {
     private final Warehouse<FooBean> fooWarehouse;
@@ -19,6 +23,7 @@ public class RobotManager implements Startable {
     private final transient ReentrantReadWriteLock robotlock;
     private final transient ReentrantReadWriteLock stateLock;
     private transient boolean isStarted;
+    private int nbThreads;
 
     ///// Constructeurs :
 
@@ -95,6 +100,7 @@ public class RobotManager implements Startable {
             robot.stop();
         }
         this.executorService.shutdownNow();
+        this.executorService =  new ThreadPoolExecutor(5, nbThreads, 300, MILLISECONDS, new LinkedBlockingQueue<>());
         this.clear();
     }
 
@@ -183,5 +189,10 @@ public class RobotManager implements Startable {
 
     public List<RobotAction> getDefaultRobotActions() {
         return defaultRobotActions;
+    }
+
+    public void setNbThreads(int nbThreads) {
+        this.nbThreads = nbThreads;
+        this.executorService =  new ThreadPoolExecutor(5, this.nbThreads, 300, MILLISECONDS, new LinkedBlockingQueue<>());
     }
 }

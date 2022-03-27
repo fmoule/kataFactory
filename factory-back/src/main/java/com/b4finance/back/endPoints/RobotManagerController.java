@@ -81,7 +81,8 @@ public class RobotManagerController {
         JSONObject jsonStateLine;
         for (String actName : actionNameMap.keySet()) {
             jsonStateLine = new JSONObject();
-            jsonStateLine.put(actName, actionNameMap.getOrDefault(actName, 0));
+            jsonStateLine.put("name", actName);
+            jsonStateLine.put("nbRobots", actionNameMap.getOrDefault(actName, 0));
             jsonState.put(jsonStateLine);
         }
         jsonResponse.put("state", jsonState);

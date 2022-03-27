@@ -27,7 +27,7 @@ class RobotTest {
     @BeforeEach
     void setUp() {
         this.robotManager = new RobotManager();
-        this.robotManager.setExecutorService(new ThreadPoolExecutor(5, 10, 300, MILLISECONDS, new LinkedBlockingQueue<>()));
+        this.robotManager.setNbThreads(10);
     }
 
 

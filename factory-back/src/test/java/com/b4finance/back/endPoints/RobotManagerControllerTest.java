@@ -47,7 +47,7 @@ class RobotManagerControllerTest {
     @BeforeEach
     void setUp() {
         this.robotManager = new RobotManager();
-        this.robotManager.setExecutorService(new ThreadPoolExecutor(2, 5, 250, MILLISECONDS, new LinkedBlockingQueue<>()));
+        this.robotManager.setNbThreads(7);
         this.robotManagerController = new RobotManagerController();
         this.robotManagerController.setRobotManager(robotManager);
     }
